@@ -1,25 +1,31 @@
 <template>
   <div>
     <h1>Welcome Admin!</h1>
-    <w-button class="ma4" bg-color="purple-light4" xl>Create product</w-button>
-    <product-table :products="products" />
+    <h2>What would you want to do?</h2>
+    <router-link to="/admin/products">
+      <w-button class="ma4" bg-color="purple-light4" xl
+        >View all products</w-button
+      >
+    </router-link>
+    <router-link to="/admin/newProduct">
+      <w-button class="ma4" bg-color="purple-light4" xl
+        >Create a new product</w-button
+      >
+    </router-link>
+    <router-link to="/admin/orders">
+      <w-button class="ma4" bg-color="purple-light4" xl>Manage orders</w-button>
+    </router-link>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useStore } from 'vuex';
-import ProductTable from '../components/ProductTable.vue';
-
 export default {
-  components: { ProductTable },
-  setup() {
-    const store = useStore();
-    return {
-      products: computed(() => store.getters.products),
-    };
-  },
+  setup() {},
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+a {
+  color: black;
+}
+</style>

@@ -10,16 +10,20 @@
         <th>Delete</th>
       </thead>
       <tbody v-if="data">
-        <tr v-for="(product, index) in data" :key="product.name">
+        <tr v-for="product in data" :key="product.name">
           <td>
-            <router-link to="/admin/products/1" tag="tr"
-              >{{ index + 1 }}
+            <router-link :to="`/admin/products/${product.id}`" tag="tr"
+              >{{ product.id }}
             </router-link>
           </td>
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.description || '' }}</td>
-          <td><w-button bg-color="warning">edit</w-button></td>
+          <td>
+            <router-link :to="`/admin/products/${product.id}/edit`"
+              ><w-button bg-color="warning">edit</w-button></router-link
+            >
+          </td>
           <td><w-button bg-color="error">delete</w-button></td>
         </tr>
       </tbody>

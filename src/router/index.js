@@ -1,7 +1,6 @@
 // @ts-nocheck
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
-import Admin from '../views/Admin.vue';
 import store from '../store';
 
 // const isAdmin = () => {
@@ -59,7 +58,49 @@ const routes = [
   },
   {
     path: '/admin',
-    component: Admin,
+    component: () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      import(/* webpackChunkName: "admin" */ '../views/Admin.vue'),
+    meta: {
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: '/admin/products',
+    component: () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      import(
+        /* webpackChunkName: "admin" */ '../views/admin/AdminProducts.vue'
+      ),
+    meta: {
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: '/admin/products/:id',
+    component: () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      import(
+        /* webpackChunkName: "admin" */ '../views/admin/AdminSingleProduct.vue'
+      ),
+    meta: {
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: '/admin/products/:id/edit',
+    component: () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      import(/* webpackChunkName: "admin" */ '../views/admin/EditProduct.vue'),
+    meta: {
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: '/admin/newProduct',
+    component: () =>
+      // eslint-disable-next-line implicit-arrow-linebreak
+      import(/* webpackChunkName: "admin" */ '../views/admin/NewProduct.vue'),
     meta: {
       requiresAdmin: true,
     },
@@ -73,7 +114,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (!store.getters['user/isAdmin'] && to.meta.requiresAdmin) {
-    return next({ name: 'Home' });
+    return next({ name: 'Login' });
   }
   return next();
 });

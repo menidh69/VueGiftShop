@@ -1,6 +1,7 @@
 <template>
   <w-app>
-    <navbar />
+    <navbar v-if="!isAdmin" />
+    <admin-navbar v-else />
     <div id="mainContent">
       <div v-if="loading">
         <w-spinner fade xl></w-spinner>
@@ -14,14 +15,16 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import Navbar from './components/Navbar.vue';
+import AdminNavbar from './components/admin/AdminNavbar.vue';
 
 export default {
-  components: { Navbar },
+  components: { Navbar, AdminNavbar },
   setup() {
     const store = useStore();
     store.dispatch('getItemsFromApi');
     return {
       loading: computed(() => store.state.loading),
+      isAdmin: computed(() => store.getters['user/isAdmin']),
     };
   },
 };

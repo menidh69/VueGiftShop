@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import { getProducts } from '@/api/products';
 import user from './user';
 import cart from './cart';
+import admin from './admin';
 
 export default createStore({
   state: () => ({
@@ -20,6 +21,12 @@ export default createStore({
     products(state) {
       return state.products;
     },
+    productById: (state) => (id) => {
+      console.log(id);
+      const selectedItem = state.products.filter((i) => i.id === id);
+
+      return selectedItem[0];
+    },
   },
   actions: {
     async getItemsFromApi({ commit, state }) {
@@ -29,5 +36,5 @@ export default createStore({
       state.loading = false;
     },
   },
-  modules: { cart, user },
+  modules: { cart, user, admin },
 });
