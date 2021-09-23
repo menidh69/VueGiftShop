@@ -41,6 +41,7 @@
 <script>
 import useVuelidate from '@vuelidate/core';
 import { email, required } from '@vuelidate/validators';
+import { mapActions } from 'vuex';
 import Error from './Error.vue';
 
 export default {
@@ -62,6 +63,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions('user', ['signUp']),
     async submit() {
       const isFormCorrect = await this.v$.$validate();
       // eslint-disable-next-line no-useless-return

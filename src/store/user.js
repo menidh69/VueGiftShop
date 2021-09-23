@@ -1,4 +1,4 @@
-import { login, logout } from '@/api/auth';
+import { login, logout, signUp } from '@/api/auth';
 
 const user = {
   namespaced: true,
@@ -27,6 +27,11 @@ const user = {
       commit('setUser', auth);
       commit('setLoading', false, { root: true });
     },
+    async signUp(body) {
+      const newUser = await signUp(body);
+      return newUser;
+    },
+
     async logout({ commit }) {
       commit('setLoading', true, { root: true });
       await logout();

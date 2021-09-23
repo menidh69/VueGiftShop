@@ -1,17 +1,29 @@
-export const login = (credentials) => {
-  const auth = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (!credentials) {
-        reject(new Error('Empty credentials'));
-      }
-      if (credentials.email === 'admin@admin.com') {
-        resolve({ fullName: 'Admin', email: 'admin@admin.com', isAdmin: true });
-      } else {
-        resolve({ fullName: 'John Doe', email: 'john@doe.com' });
-      }
-    }, 1500);
-  });
-  return auth;
+import axios from './axiosConfig';
+
+export const login = async (credentials) => {
+  await axios
+    .post('/users/signIn', credentials)
+    .then((resp) => {
+      console.log(resp);
+      return resp.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      return error;
+    });
+};
+
+export const signUp = async (body) => {
+  await axios
+    .post('/users', body)
+    .then((resp) => {
+      console.log(resp);
+      return resp.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      return error;
+    });
 };
 
 export const logout = () => {
