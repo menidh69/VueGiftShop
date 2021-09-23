@@ -1,6 +1,6 @@
 <template>
   <div>
-    <product-form :product="product" />
+    <product-form :product="product" :save="save" />
   </div>
 </template>
 
@@ -17,6 +17,10 @@ export default {
   methods: {
     setCurrentProduct(id) {
       this.product = this.$store.getters.productById(id);
+    },
+    save(body) {
+      const newBody = { id: this.$route.params.id, ...body };
+      this.$store.dispatch('admin/editProduct', newBody);
     },
   },
   created() {

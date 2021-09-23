@@ -1,30 +1,28 @@
+/* eslint-disable implicit-arrow-linebreak */
 import axios from './axiosConfig';
 
-export const login = async (credentials) => {
-  await axios
+export const login = async (credentials) =>
+  axios
     .post('/users/signIn', credentials)
     .then((resp) => {
-      console.log(resp);
-      return resp.data;
+      console.log(credentials);
+      return resp;
     })
-    .catch((error) => {
-      console.log(error);
-      return error;
-    });
-};
+    .catch((error) => error.response.data.message);
 
-export const signUp = async (body) => {
-  await axios
+export const signUp = async (body) =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  axios
     .post('/users', body)
     .then((resp) => {
       console.log(resp);
-      return resp.data;
+      const { status, data } = resp;
+      return { status, data };
     })
     .catch((error) => {
       console.log(error);
       return error;
     });
-};
 
 export const logout = () => {
   const resp = new Promise((resolve) => {

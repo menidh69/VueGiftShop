@@ -1,7 +1,11 @@
 <template>
   <div>
     <h1>Products</h1>
-    <w-button class="ma4" bg-color="purple-light4" xl>Create product</w-button>
+    <router-link to="/admin/newProduct">
+      <w-button class="ma4" bg-color="purple-light4" xl
+        >Create product</w-button
+      >
+    </router-link>
     <product-table :products="products" />
   </div>
 </template>

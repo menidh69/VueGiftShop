@@ -1,9 +1,29 @@
+import { addToCart } from '../api/userCart';
+
 const cart = {
   namespaced: true,
   state: () => ({
     items: [],
   }),
-  actions: {},
+  actions: {
+    async addItem({ commit, rootState }, item) {
+      if (rootState.user.isLoggedIn) {
+        console.log('Im logged in');
+        try {
+          await addToCart(item.id);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      commit('addItem', item);
+    },
+    async removeItem({ commit, rootState }, itemName) {
+      if (rootState.user.isLoggedIn) {
+        console.log('Im logged in');
+      }
+      commit('removeItem', itemName);
+    },
+  },
   getters: {
     cartItems(state) {
       return state.items;
@@ -33,6 +53,9 @@ const cart = {
       } else {
         itemRef[0].quantity -= 1;
       }
+    },
+    setCartItems(state, items) {
+      state.items = items;
     },
   },
 };

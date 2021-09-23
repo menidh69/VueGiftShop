@@ -24,7 +24,11 @@
               ><w-button bg-color="warning">edit</w-button></router-link
             >
           </td>
-          <td><w-button bg-color="error">delete</w-button></td>
+          <td>
+            <w-button bg-color="error" @click="deleteProduct(product.id)"
+              >delete</w-button
+            >
+          </td>
         </tr>
       </tbody>
     </table>
@@ -32,6 +36,9 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+
 export default {
   props: {
     products: {
@@ -39,9 +46,12 @@ export default {
       default: () => {},
     },
   },
+
   setup(props) {
+    const store = useStore();
     return {
-      data: props.products,
+      data: computed(() => props.products),
+      deleteProduct: (id) => store.dispatch('admin/deleteProduct', id),
     };
   },
 };

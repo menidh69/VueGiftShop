@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
+// eslint-disable-next-line import/no-cycle
 import store from '../store';
 
 // const isAdmin = () => {

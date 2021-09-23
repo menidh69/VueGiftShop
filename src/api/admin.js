@@ -1,29 +1,23 @@
-export const createNewProduct = (data) => {
-  const resp = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (!data) return reject(new Error('No data'));
-      return resolve();
-    }, 1000);
-  });
-  return resp;
-};
+/* eslint-disable implicit-arrow-linebreak */
+import axios from './axiosConfig';
 
-export const editProduct = (data) => {
-  const resp = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (!data) return reject(new Error('No data'));
-      return resolve();
-    }, 1000);
-  });
-  return resp;
-};
+export const addProduct = async (body) =>
+  axios
+    .post('/products', body)
+    .then((resp) => {
+      console.log(resp);
+      return resp.data;
+    })
+    .catch((e) => e.response.data.message);
 
-export const deleteProduct = (data) => {
-  const resp = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (!data) return reject(new Error('No data'));
-      return resolve();
-    }, 1000);
-  });
-  return resp;
-};
+export const updateProduct = async (id, body) =>
+  axios
+    .patch(`/products/${id}`, body)
+    .then((resp) => resp)
+    .catch((e) => e.response.data.message);
+
+export const deleteProduct = async (id) =>
+  axios
+    .delete(`/products/${id}`)
+    .then((resp) => resp)
+    .catch((e) => e.response.data.message);

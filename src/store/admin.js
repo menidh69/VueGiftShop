@@ -1,4 +1,6 @@
-import { createNewProduct, editProduct, deleteProduct } from '../api/admin';
+import { addProduct, updateProduct, deleteProduct } from '../api/admin';
+// eslint-disable-next-line import/no-cycle
+import router from '../router';
 
 const admin = {
   namespaced: true,
@@ -8,21 +10,29 @@ const admin = {
     loading: false,
   }),
   actions: {
-    async createProduct({ commit }, data) {
+    async createProduct({ commit }, body) {
       commit('setLoading', true);
-      const resp = await createNewProduct(data);
-      console.log(`ejecutado ${resp}`);
-      commit('addProduct', data);
-    },
-    async editProduct({ commit }, data) {
-      const resp = await editProduct(data);
-      commit('editProduct', data);
-      console.log(`ejecutado ${resp}`);
-    },
-    async deleteProduct({ commit }, data) {
       try {
-        await deleteProduct(data);
-        commit('deleteProduct', data);
+        const resp = await addProduct(body);
+        commit('addProduct', resp);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async editProduct({ commit }, body) {
+      const { id } = body;
+      try {
+        await updateProduct(id, body);
+        commit('editProduct', body);
+        router.push('/admin/products');
+      } catch (e) {
+        commit('setAdminError', e.response.data.message);
+      }
+    },
+    async deleteProduct({ commit }, id) {
+      try {
+        await deleteProduct(id);
+        commit('deleteProduct', id);
       } catch (e) {
         commit('setAdminError', e);
       }
@@ -40,6 +50,22 @@ const admin = {
     addProduct(state, payload) {
       this.state.products = [...this.state.products, payload];
       state.success = true;
+    },
+    deleteProduct(state, id) {
+      console.log(this.state.products);
+      const newData = [...this.state.products].filter(
+        (product) => product.id !== id,
+      );
+      console.log(newData);
+      this.state.products = newData;
+    },
+    editProduct(state, body) {
+      const { id } = body;
+      const newData = [...this.state.products].filter(
+        (product) => product.id !== id,
+      );
+      newData.push(body);
+      this.state.products = newData;
     },
     restart(state) {
       state.success = false;

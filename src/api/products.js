@@ -1,16 +1,10 @@
-import products from './mockProducts.json';
+/* eslint-disable implicit-arrow-linebreak */
+// import products from './mockProducts.json';
+import axios from './axiosConfig';
 
-export const getProducts = () => {
-  const data = new Promise((resolve, reject) => {
-    try {
-      setTimeout(() => {
-        resolve(products);
-      }, 1000);
-    } catch (e) {
-      reject(e);
-    }
-  });
-  return data;
-};
-
-export const addProduct = () => true;
+// eslint-disable-next-line import/prefer-default-export
+export const getProducts = () =>
+  axios
+    .get('/products')
+    .then((resp) => resp.data)
+    .catch((e) => e.response.message);

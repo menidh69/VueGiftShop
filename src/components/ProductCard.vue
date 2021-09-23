@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   props: {
@@ -26,7 +26,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('cart', ['addItem', 'removeItem']),
+    ...mapActions('cart', ['addItem', 'removeItem']),
     add() {
       this.$waveui.notify('Added product', 'success', 4000);
 

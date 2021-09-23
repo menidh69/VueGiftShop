@@ -1,8 +1,16 @@
 import { createStore } from 'vuex';
+import VuexPersistence from 'vuex-persist';
 import { getProducts } from '@/api/products';
+
+// eslint-disable-next-line import/no-cycle
 import user from './user';
 import cart from './cart';
 import admin from './admin';
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+  modules: ['user'],
+});
 
 export default createStore({
   state: () => ({
@@ -32,9 +40,10 @@ export default createStore({
     async getItemsFromApi({ commit, state }) {
       state.loading = true;
       const data = await getProducts();
-      commit('setProducts', data.arrayOfProducts);
+      commit('setProducts', data);
       state.loading = false;
     },
   },
   modules: { cart, user, admin },
+  plugins: [vuexLocal.plugin],
 });

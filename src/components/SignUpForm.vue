@@ -43,6 +43,7 @@ import useVuelidate from '@vuelidate/core';
 import { email, required } from '@vuelidate/validators';
 import { mapActions } from 'vuex';
 import Error from './Error.vue';
+import { signUp } from '@/api/auth';
 
 export default {
   components: { Error },
@@ -68,6 +69,18 @@ export default {
       const isFormCorrect = await this.v$.$validate();
       // eslint-disable-next-line no-useless-return
       if (!isFormCorrect) return;
+      const resp = await signUp({
+        fullName: this.fullName,
+        email: this.email,
+        password: this.password,
+      });
+      console.log(resp);
+      if (resp.status === 201) {
+        this.$waveui.notify('User created succesfully', 'success', 4000);
+        this.$router.push('/login');
+      } else {
+        this.$waveui.notify('Something went wrong', 'error', 4000);
+      }
     },
   },
   setup() {

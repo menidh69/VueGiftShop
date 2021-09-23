@@ -79,7 +79,7 @@ export default {
       await this.save({
         name: this.name,
         imgUrl: this.imgUrl,
-        price: this.price,
+        price: this.price.toString(),
       });
     },
     mapPropsToData() {

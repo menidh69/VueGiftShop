@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p v-if="error" class="error">{{ error }}</p>
     <form @submit.prevent="login">
       <div class="inputGroup">
         <label for="email">Email</label>
@@ -25,7 +26,8 @@
 
 <script>
 import useVuelidate from '@vuelidate/core';
-import { mapActions } from 'vuex';
+import { mapActions, useStore } from 'vuex';
+import { computed } from 'vue';
 import { email, required } from '@vuelidate/validators';
 import Error from './Error.vue';
 
@@ -50,13 +52,15 @@ export default {
       // eslint-disable-next-line no-useless-return
       if (!isFormCorrect) return;
       await this.login({ email: this.email, password: this.password });
-
-      this.$router.push('/');
-      this.$waveui.notify('Welcome back!', 'success', 4000);
     },
   },
+
   setup() {
-    return { v$: useVuelidate() };
+    const store = useStore();
+    return {
+      v$: useVuelidate(),
+      error: computed(() => store.getters['user/error']),
+    };
   },
 };
 </script>

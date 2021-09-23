@@ -13,16 +13,27 @@
 
 <script>
 import { computed } from 'vue';
-import { useStore } from 'vuex';
+import { mapMutations, useStore } from 'vuex';
 import Navbar from './components/Navbar.vue';
 import AdminNavbar from './components/admin/AdminNavbar.vue';
+import { setBearerToken } from './api/axiosConfig';
 
 export default {
   components: { Navbar, AdminNavbar },
+  methods: {
+    ...mapMutations('cart', ['setCartItems']),
+  },
+  created() {
+    if (this.$store.getters['user/isLoggedIn']) {
+      setBearerToken(this.$store.getters['user/userData'].accessToken);
+    }
+  },
   setup() {
     const store = useStore();
     store.dispatch('getItemsFromApi');
+
     return {
+      products: computed(() => store.getters.products),
       loading: computed(() => store.state.loading),
       isAdmin: computed(() => store.getters['user/isAdmin']),
     };
