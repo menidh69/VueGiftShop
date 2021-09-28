@@ -33,7 +33,7 @@ export default {
       this.addItem(this.data);
     },
     remove() {
-      this.removeItem(this.data.name);
+      this.removeItem(this.data.id);
       this.$waveui.notify('Removed product', 'success');
     },
   },

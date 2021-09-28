@@ -10,6 +10,7 @@ const user = {
       isLoggedIn: false,
       userData: null,
       error: null,
+      bearer: null,
     };
   },
   getters: {
@@ -28,6 +29,9 @@ const user = {
     isLoggedIn(state) {
       return state.isLoggedIn;
     },
+    bearer(state) {
+      return state.bearer;
+    },
   },
   actions: {
     async login({ commit }, credentials) {
@@ -40,6 +44,7 @@ const user = {
           commit('setAdmin');
         }
         setBearerToken(resp.data.accessToken);
+        console.log(resp.data.accessToken);
         commit('setCartItems', resp.data.shoppingCart.cartProducts);
         commit('setUser', resp.data);
         router.push('/');
@@ -59,6 +64,7 @@ const user = {
     setUser(state, data) {
       state.userData = data;
       state.isLoggedIn = true;
+      state.bearer = data.accessToken;
     },
     logout(state) {
       state.userData = null;
@@ -70,6 +76,9 @@ const user = {
     },
     setAdmin(state) {
       state.isAdmin = true;
+    },
+    setBearer(state, payload) {
+      state.bearer = payload;
     },
   },
 };

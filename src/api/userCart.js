@@ -15,6 +15,12 @@ export const addToCart = async (itemId) =>
 
 export const removeFromCart = async (item) =>
   axios
-    .post('/shopping-cart', item)
+    .post('/shopping-cart/remove', item)
     .then((resp) => resp)
+    .catch((e) => e.response.data.message);
+
+export const getCart = async (id) =>
+  axios
+    .get(`/users/${id}/cart`)
+    .then((resp) => resp.data)
     .catch((e) => e.response.data.message);

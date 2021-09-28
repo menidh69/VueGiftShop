@@ -1,4 +1,4 @@
-import { addToCart } from '../api/userCart';
+import { addToCart, getCart, removeFromCart } from '../api/userCart';
 
 const cart = {
   namespaced: true,
@@ -17,11 +17,21 @@ const cart = {
       }
       commit('addItem', item);
     },
-    async removeItem({ commit, rootState }, itemName) {
+    async removeItem({ commit, rootState }, itemId) {
       if (rootState.user.isLoggedIn) {
         console.log('Im logged in');
       }
-      commit('removeItem', itemName);
+      try {
+        await removeFromCart(itemId);
+        commit('removeItem', itemId);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async getCartFromApi({ commit, rootState }) {
+      const data = await getCart(rootState.user.userData.id);
+      console.log(data);
+      commit('setCart', data.cartProducts);
     },
   },
   getters: {
@@ -46,16 +56,17 @@ const cart = {
         state.items = [...state.items, { ...item, quantity: 1 }];
       }
     },
-    removeItem(state, itemName) {
-      const itemRef = state.items.filter((item) => item.name === itemName);
+    removeItem(state, itemId) {
+      const itemRef = state.items.filter((item) => item.id === itemId);
       if (itemRef[0].quantity === 1) {
-        state.items = state.items.filter((item) => item.name !== itemName);
+        state.items = state.items.filter((item) => item.id !== itemId);
       } else {
         itemRef[0].quantity -= 1;
       }
     },
-    setCartItems(state, items) {
-      state.items = items;
+    setCart(state, items) {
+      const newItems = items.map((i) => ({ ...i.product, ...i }));
+      state.items = newItems;
     },
   },
 };
