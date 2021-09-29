@@ -8,7 +8,7 @@
     </div>
     <hr />
     <h2>Total: ${{ total }}</h2>
-    <button>Checkout</button>
+    <button @click="buy">Checkout</button>
   </div>
 </template>
 
@@ -17,16 +17,22 @@ import { useStore } from 'vuex';
 import { computed } from 'vue';
 
 export default {
+
   setup() {
     const store = useStore();
     const subtotal = computed(() => store.getters['cart/getTotal']);
     const taxes = computed(() => subtotal.value * 0.16);
     const total = computed(() => subtotal.value + taxes.value);
 
+    const buy = () => {
+      store.dispatch('cart/buyItems');
+    };
+
     return {
       subtotal,
       taxes,
       total,
+      buy,
     };
   },
 };
@@ -46,6 +52,7 @@ export default {
     background-color: salmon;
     color: white;
     border-radius: 10px;
+    cursor: pointer;
     border: none;
   }
 }

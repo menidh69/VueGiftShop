@@ -1,4 +1,6 @@
-import { addToCart, getCart, removeFromCart } from '../api/userCart';
+import {
+  addToCart, getCart, removeFromCart, buyItems,
+} from '../api/userCart';
 
 const cart = {
   namespaced: true,
@@ -33,6 +35,10 @@ const cart = {
       console.log(data);
       commit('setCart', data.cartProducts);
     },
+    async buyItems({ commit }) {
+      await buyItems();
+      commit('cleanCart');
+    },
   },
   getters: {
     cartItems(state) {
@@ -46,6 +52,7 @@ const cart = {
       const total = state.items.reduce((a, b) => a + b.quantity * b.price, 0);
       return total;
     },
+
   },
   mutations: {
     addItem(state, item) {
@@ -55,6 +62,9 @@ const cart = {
       } else {
         state.items = [...state.items, { ...item, quantity: 1 }];
       }
+    },
+    cleanCart(state) {
+      state.items = [];
     },
     removeItem(state, itemId) {
       const itemRef = state.items.filter((item) => item.id === itemId);
@@ -66,6 +76,7 @@ const cart = {
     },
     setCart(state, items) {
       const newItems = items.map((i) => ({ ...i.product, ...i }));
+      console.log(newItems);
       state.items = newItems;
     },
   },

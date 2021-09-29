@@ -3,7 +3,7 @@ import axios from './axiosConfig';
 
 export const addToCart = async (itemId) =>
   axios
-    .post('/shopping-cart', itemId)
+    .post('/shopping-cart', { productId: itemId })
     .then((resp) => {
       console.log(resp);
       return resp;
@@ -15,7 +15,7 @@ export const addToCart = async (itemId) =>
 
 export const removeFromCart = async (item) =>
   axios
-    .post('/shopping-cart/remove', item)
+    .post('/shopping-cart/remove', { productId: item })
     .then((resp) => resp)
     .catch((e) => e.response.data.message);
 
@@ -24,3 +24,8 @@ export const getCart = async (id) =>
     .get(`/users/${id}/cart`)
     .then((resp) => resp.data)
     .catch((e) => e.response.data.message);
+
+export const buyItems = async () => {
+  axios.post('/orders').then((resp) => resp.data)
+    .catch((e) => e.response.data.message);
+};
